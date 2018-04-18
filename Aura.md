@@ -30,6 +30,15 @@ all of its ancestors are finalized.
 
 This definition of finality stems from a simple majority vote. In this setting, $$2f + 1 \leq n$$, so the faulty nodes cannot finalize a block all on their own.
 
+#### Empty steps
+
+In order to reach finality in a timely fashion it is necessary for the nodes to keep sealing blocks even when there are no transactions. 
+To reduce blockchain bloat while still maintaining the same finality guarantees the nodes can sign and broadcast an `EmptyStep(step, parent_hash)` message instead of producing an empty block. All of the nodes accumulate the broadcasted empty step messages and they are included and rewarded in the next non-empty block.
+
+The empty step messages included in blocks are also taken into account for finality.
+
+To enable empty step messages set the `emptyStepsTransition` to enable it at the given block number. You can also specify a maximum number of empty steps with `maximumEmptySteps` in your chain spec.
+
 ### Node Configuration
 
 This consensus requires a [`ValidatorSet`](Validator-Set.md) to be specified, which determines the list of $$n$$ blockchain addresses at each height $$h$$ which participate in the consensus.
